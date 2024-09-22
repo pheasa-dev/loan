@@ -20,14 +20,14 @@ function calculateLoan() {
         document.getElementById('total-payment').innerHTML = (monthly * calculatePayments).toFixed(2);
         document.getElementById('total-interest').innerHTML = ((monthly * calculatePayments) - principal).toFixed(2);
 
-        generatePaymentSchedule(principal, monthly, calculateInterest, calculatePayments);
+        PaymentSchedule(principal, monthly, calculateInterest, calculatePayments);
         document.getElementById('results').style.display = 'block';
     } else {
         alert('Please check your numbers');
     }
 }
 
-function generatePaymentSchedule(principal, monthly, rate, payments) {
+function PaymentSchedule(principal, monthly, rate, payments) {
     const tbody = document.getElementById('payment-schedule').querySelector('tbody');
     tbody.innerHTML = ''; // Clear previous schedule
     let balance = principal;
@@ -43,7 +43,7 @@ function generatePaymentSchedule(principal, monthly, rate, payments) {
             <td>${interestPaid.toFixed(2)}</td>
             <td>${balance.toFixed(2)}</td>
         `;
-        tbody.appendChild(row);
+        // tbody.appendChild(row);
     }
 }
 
