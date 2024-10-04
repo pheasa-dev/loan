@@ -1,62 +1,61 @@
+// Function to calculate monthly payments and schedule
 function calculateLoan() {
-    const amount = document.getElementById('amount').value;
-    const interest = document.getElementById('interest').value;
-    const years = document.getElementById('years').value;
-
-    if (amount === '' || interest === '' || years === '') {
-        alert('Please fill in all fields');
-        return;
+    // Get input values
+    const loanAmount = parseFloat(document.getElementById('loanAmount').value);
+    const annualInterestRate = parseFloat(document.getElementById('interestRate').value) / 100;
+    const loanTerm = parseInt(document.getElementById('loanTerm').value);
+  
+    if (isNaN(loanAmount) || isNaN(annualInterestRate) || isNaN(loanTerm)) {
+      alert("Please fill all fields correctly.");
+      return;
     }
+    const monthlyInterestRate = annualInterestRate / 12;
+    const totalPayments = loanTerm * 12;
+  
+    // Calculate monthly payment
+    const monthlyPayment = (loanAmount * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -totalPayments));
 
-    const principal = parseFloat(amount);
-    const calculateInterest = parseFloat(interest) / 100 / 12;
-    const calculatePayments = parseFloat(years) * 12;
+    const scheduleBody = document.querySelector('#paymentSchedule tbody');
+    scheduleBody.innerHTML = '';
+  
+    // Variables to hold balance, interest, and principal
+    let balance = loanAmount;
+    let totalInterest = 0;
+  
+    // payment schedule
+    for (let month = 1; month <= totalPayments; month++) {
+      const interestPayment = balance * monthlyInterestRate;
+      const principalPayment = monthlyPayment - interestPayment;
+      balance -= principalPayment;
+      totalInterest += interestPayment;
+      // Add row to the schedule table
+      const row = scheduleBody.insertRow();
+      row.insertCell(0).innerText = month;
+      row.insertCell(1).innerText = monthlyPayment.toFixed(2);
+      row.insertCell(2).innerText = principalPayment.toFixed(2);
+      row.insertCell(3).innerText = interestPayment.toFixed(2);
+      row.insertCell(4).innerText = balance.toFixed(2);
+    } 
+    // Show the result section
+    document.getElementById('resultSection').style.display = 'block';
+  }
+  function clearCalculator() {
+    // Clear input fields
+    document.getElementById("loanAmount").value = "";
+    document.getElementById("interestRate").value = "";
+    document.getElementById("loanTerm").value = "";
+  
+    // Hide the result section
+    document.getElementById("resultSection").style.display = "none";
+  
+    // Clear the payment schedule table body
+    const scheduleBody = document.querySelector("#paymentSchedule tbody");
+    scheduleBody.innerHTML = "";
+  }
 
-    const x = Math.pow(1 + calculateInterest, calculatePayments);
-    const monthly = (principal * x * calculateInterest) / (x - 1);
+  // Function to print the payment schedule
+  function printSchedule() {
 
-    if (isFinite(monthly)) {
-        document.getElementById('monthly-payment').innerHTML = monthly.toFixed(2);
-        document.getElementById('total-payment').innerHTML = (monthly * calculatePayments).toFixed(2);
-        document.getElementById('total-interest').innerHTML = ((monthly * calculatePayments) - principal).toFixed(2);
-
-        PaymentSchedule(principal, monthly, calculateInterest, calculatePayments);
-        document.getElementById('results').style.display = 'block';
-    } else {
-        alert('Please check your numbers');
-    }
-}
-
-function PaymentSchedule(principal, monthly, rate, payments) {
-    const tbody = document.getElementById('payment-schedule').querySelector('tbody');
-    tbody.innerHTML = ''; // Clear previous schedule
-    let balance = principal;
-    for (let i = 1; i <= payments; i++) {
-        const interestPaid = balance * rate;
-        const principalPaid = monthly - interestPaid;
-        balance -= principalPaid;
-
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${i}</td>
-            <td>${principalPaid.toFixed(2)}</td>
-            <td>${interestPaid.toFixed(2)}</td>
-            <td>${balance.toFixed(2)}</td>
-        `;
-        // tbody.appendChild(row);
-    }
-}
-
-function clearForm() {
-    document.getElementById('loan-form').reset();
-    document.getElementById('results').style.display = 'none';
-}
-
-function printResults() {
-    const results = document.getElementById('results').innerHTML;
-    const originalContent = document.body.innerHTML;
-
-    document.body.innerHTML = results;
     window.print();
-    document.body.innerHTML = originalContent;
-}
+  }
+  
