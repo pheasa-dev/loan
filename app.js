@@ -2,7 +2,7 @@
 function calculateLoan() {
     // Get input values
     const loanAmount = parseFloat(document.getElementById('loanAmount').value);
-    const annualInterestRate = parseFloat(document.getElementById('interestRate').value) / 100;
+    const annualInterestRate = parseFloat(document.getElementById('interestRate').value) / 100 /12;
     const loanTerm = parseInt(document.getElementById('loanTerm').value);
   
     if (isNaN(loanAmount) || isNaN(annualInterestRate) || isNaN(loanTerm)) {
@@ -46,16 +46,13 @@ function calculateLoan() {
     document.getElementById("loanTerm").value = "";
   
     // Hide the result section
-    document.getElementById("resultSection").style.display = "none";
-  
-    // Clear the payment schedule table body
+     document.getElementById("resultSection").style.display = "none";
+
     const scheduleBody = document.querySelector("#paymentSchedule tbody");
     scheduleBody.innerHTML = "";
   }
 
-  // Function to print the payment schedule
   function printSchedule() {
-
     window.print();
   }
   

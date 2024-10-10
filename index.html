@@ -20,12 +20,10 @@
                     placeholder="Enter interest rate">
 
                 <label for="loanTerm">Loan Term (Years):</label>
-                <input type="number" id="loanTerm"
-                    placeholder="Enter loan term"><br>
-                <button onclick="calculateLoan()">Cal</button>
-                <button type="submit" onclick>Print</button>
-                <button type="reset" onclick="clearCalculator()">Clare</button>
+                <input type="number" id="loanTerm"placeholder="Enter loan term"><br>
+                <button onclick="calculateLoan()">Print</button>
                 <button onclick="printSchedule()">Print Schedule</button>
+                <button type="reset" onclick="clearCalculator()">Clare</button>
             </div>
             <div class="result-section" id="resultSection">
                 <h2>Payment Schedule</h2>
@@ -41,9 +39,7 @@
                     </thead>
                     <tbody></tbody>
                 </table>
-
             </div>
-
         </div>
 
         <script src="./app.js"></script>
